@@ -21,12 +21,54 @@ const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
 const WebSocket = require("ws");
 ;
+class OmySystem {
+    create(systemname = '') {
+        this.systemname = systemname;
+        return this;
+    }
+}
+exports.OmySystem = OmySystem;
+class Ouserprofile {
+    create(owner = '') {
+        this.owner = owner;
+        return this;
+    }
+}
+exports.Ouserprofile = Ouserprofile;
+class Ouserprefix {
+    create(prefixname = '', prefix = '') {
+        this.prefixname = prefixname;
+        this.prefix = prefix;
+        return this;
+    }
+}
+exports.Ouserprefix = Ouserprefix;
+class Opermissions {
+    create(permissionname = '') {
+        this.permissionname = permissionname;
+        return this;
+    }
+}
+exports.Opermissions = Opermissions;
+class Oencryptionkeys {
+    create(owner = '') {
+        this.owner = owner;
+        return this;
+    }
+}
+exports.Oencryptionkeys = Oencryptionkeys;
+class Oroles {
+    create(rolename = '') {
+        this.rolename = rolename;
+        return this;
+    }
+}
 class App {
     constructor() {
         this._current_online_client = [];
         this._current_system = 'user-management';
-        this._client_prefix = ['ice-maker', 'gij', 'web-post', 'user-management', 'default'];
-        this._system_prefix = ['ice-maker', 'gij', 'web-post', 'user-management'];
+        this._client_prefix = ['ice-maker', 'gij', 'web-post', 'user-management', 'default', 'random-game', 'stock-manager'];
+        this._system_prefix = ['ice-maker', 'gij', 'web-post', 'user-management', 'random-game', 'stock-manager'];
         this.app = express();
         this._allClient = [];
         this._client = {
@@ -62,6 +104,8 @@ class App {
             totalgijspent: 0
         };
         this.defaultUser = {
+            _id: '',
+            _rev: '',
             username: '@d31n',
             password: '123456',
             confirmpassword: '',
@@ -71,19 +115,25 @@ class App {
             lastupdate: this.convertTZ(moment().format()),
             isactive: true,
             parents: ["default"],
-            roles: ['admin', 'user'],
+            roles: [(new Oroles()).create('admin'), (new Oroles()).create('user')],
             logintoken: '',
             expirelogintoken: '',
             description: '',
-            photo: [],
+            //photo: [],
             note: '',
-            system: ['gij', 'web-post', 'user-management', 'ice-maker', 'gps'],
+            system: [(new OmySystem()).create('gij'), (new OmySystem()).create('web-post'), , (new OmySystem()).create('user-management'), (new OmySystem()).create('ice-maker'), (new OmySystem()).create('gps')],
             gijvalue: 0,
             totalgij: 0,
             totalgijspent: 0,
-            oldphone: []
+            oldphone: [],
+            userprofile: (new Ouserprofile()).create(''),
+            userprefix: (new Ouserprefix()).create('', ''),
+            permission: (new Opermissions()).create(''),
+            enryptionkeys: (new Oencryptionkeys()).create('')
         };
         this.sDefaultUsers = [{
+                _id: '',
+                _rev: '',
                 username: 'webpost-admin',
                 password: '123456',
                 confirmpassword: '',
@@ -93,19 +143,25 @@ class App {
                 lastupdate: this.convertTZ(moment().format()),
                 isactive: true,
                 parents: ["default"],
-                roles: ['admin', 'user'],
+                roles: [(new Oroles()).create('admin'), (new Oroles()).create('user')],
                 logintoken: '',
                 expirelogintoken: '',
                 description: '',
-                photo: [],
+                //photo: [],
                 note: '',
-                system: ['web-post', 'gij'],
+                system: [(new OmySystem()).create('web-post'), (new OmySystem()).create('gij')],
                 gijvalue: 0,
                 totalgij: 0,
                 totalgijspent: 0,
                 oldphone: [],
+                userprofile: (new Ouserprofile()).create(''),
+                userprefix: (new Ouserprefix()).create('', ''),
+                permission: (new Opermissions()).create(''),
+                enryptionkeys: (new Oencryptionkeys()).create('')
             },
             {
+                _id: '',
+                _rev: '',
                 username: 'gij-admin',
                 password: '123456',
                 confirmpassword: '',
@@ -115,19 +171,25 @@ class App {
                 lastupdate: this.convertTZ(moment().format()),
                 isactive: true,
                 parents: ["default"],
-                roles: ['admin', 'user'],
+                roles: [(new Oroles()).create('admin'), (new Oroles()).create('user')],
                 logintoken: '',
                 expirelogintoken: '',
                 description: '',
-                photo: [],
+                //photo: [],
                 note: '',
-                system: ['gij'],
+                system: [(new OmySystem()).create('gij')],
                 gijvalue: 0,
                 totalgij: 0,
                 totalgijspent: 0,
-                oldphone: []
+                oldphone: [],
+                userprofile: (new Ouserprofile()).create(''),
+                userprefix: (new Ouserprefix()).create('', ''),
+                permission: (new Opermissions()).create(''),
+                enryptionkeys: (new Oencryptionkeys()).create('')
             },
             {
+                _id: '',
+                _rev: '',
                 username: 'gps-admin',
                 password: '123456',
                 confirmpassword: '',
@@ -137,19 +199,25 @@ class App {
                 lastupdate: this.convertTZ(moment().format()),
                 isactive: true,
                 parents: ["default"],
-                roles: ['admin', 'user'],
+                roles: [(new Oroles()).create('admin'), (new Oroles()).create('user')],
                 logintoken: '',
                 expirelogintoken: '',
                 description: '',
-                photo: [],
+                // photo: [],
                 note: '',
-                system: ['gps', 'gij'],
+                system: [(new OmySystem()).create('gps'), (new OmySystem()).create('gij')],
                 gijvalue: 0,
                 totalgij: 0,
                 totalgijspent: 0,
-                oldphone: []
+                oldphone: [],
+                userprofile: (new Ouserprofile()).create(''),
+                userprefix: (new Ouserprefix()).create('', ''),
+                permission: (new Opermissions()).create(''),
+                enryptionkeys: (new Oencryptionkeys()).create('')
             },
             {
+                _id: '',
+                _rev: '',
                 username: 'ice-maker-admin',
                 password: '123456',
                 confirmpassword: '',
@@ -159,17 +227,49 @@ class App {
                 lastupdate: this.convertTZ(moment().format()),
                 isactive: true,
                 parents: ["default"],
-                roles: ['admin', 'user'],
+                roles: [(new Oroles()).create('admin'), (new Oroles()).create('user')],
                 logintoken: '',
                 expirelogintoken: '',
                 description: '',
-                photo: [],
+                // photo: [],
                 note: '',
-                system: ['ice-maker', 'gij'],
+                system: [(new OmySystem()).create('ice-maker'), (new OmySystem()).create('gij')],
                 gijvalue: 0,
                 totalgij: 0,
                 totalgijspent: 0,
-                oldphone: []
+                oldphone: [],
+                userprofile: (new Ouserprofile()).create(''),
+                userprefix: (new Ouserprefix()).create('', ''),
+                permission: (new Opermissions()).create(''),
+                enryptionkeys: (new Oencryptionkeys()).create('')
+            },
+            {
+                _id: '',
+                _rev: '',
+                username: 'stock-manager-admin',
+                password: '123456',
+                confirmpassword: '',
+                phonenumber: '2055516321',
+                gui: uuidV4(),
+                createddate: this.convertTZ(moment().format()),
+                lastupdate: this.convertTZ(moment().format()),
+                isactive: true,
+                parents: ["default"],
+                roles: [(new Oroles()).create('admin'), (new Oroles()).create('user')],
+                logintoken: '',
+                expirelogintoken: '',
+                description: '',
+                // photo: [],
+                note: '',
+                system: [(new OmySystem()).create('stock-manager'), (new OmySystem()).create('gij')],
+                gijvalue: 0,
+                totalgij: 0,
+                totalgijspent: 0,
+                oldphone: [],
+                userprofile: (new Ouserprofile()).create(''),
+                userprefix: (new Ouserprefix()).create('', ''),
+                permission: (new Opermissions()).create(''),
+                enryptionkeys: (new Oencryptionkeys()).create('')
             },
         ];
         this.data = {
@@ -258,11 +358,11 @@ class App {
                     "map": "function(doc) {\n   for(var i=0;i<doc.parents.length;i++) emit([doc.parents[i]], null);\n}"
                 },
                 "findAdmin": {
-                    "map": "function(doc) {\n   for(var i=0;i<doc.system.length;i++) emit([doc.system[i]], null);\n}"
+                    "map": "function(doc) {\n   for(var i=0;i<doc.system.length;i++) emit([doc.system[i].systemname], null);\n}"
                 },
                 "countAdmin": {
                     "reduce": "_count",
-                    "map": "function(doc) {\n   for(var i=0;i<doc.system.length;i++) emit([doc.system[i]], null);\n}"
+                    "map": "function(doc) {\n   for(var i=0;i<doc.system.length;i++) emit([doc.system[i].systemname], null);\n}"
                 }
             },
             "language": "javascript"
@@ -314,7 +414,7 @@ class App {
         this._usermanager_host = 'http://nonav.net:6688';
         // this._usermanager_ws = 'ws://nonav.net:6688';
         this._usermanager_ws = 'ws://localhost:6688';
-        this.nano = Nano('http://admin:admin@localhost:5984');
+        this.nano = Nano('http://admin:5martH67@laoapps.com:5984');
         this.r_client = redis.createClient();
         const checkPrefix = (req, res, next) => {
             let js = {};
@@ -412,28 +512,27 @@ class App {
                     ws['isAlive'] = false;
                 else
                     ws['isAlive'] = true;
-                parent.wss.clients.forEach(element => {
-                    let client = element['client'];
-                    if (parent._allClient.indexOf(client.gui)) {
-                        element.close();
-                        parent.wss.clients.delete(element);
-                        return;
-                    }
-                    else {
-                        parent._allClient.push(element);
-                    }
-                    parent.r_client.get(parent._current_system + '_usergui_' + client.logintoken, (err, r) => {
-                        let res = JSON.parse(r);
-                        if (res) {
-                            if (res.gui) {
-                                parent.setUserGUIStatus(client, res.gui);
-                            }
-                        }
-                        parent.setLoginStatus(client);
-                        parent.setClientStatus(client);
-                        parent.setOnlineStatus(client);
-                    });
-                });
+                // parent.wss.clients.forEach(element => {
+                //     let client = element['client'];
+                //     if (parent._allClient.indexOf(client.gui)) {
+                //         element.close();
+                //         parent.wss.clients.delete(element);
+                //         return;
+                //     } else {
+                //         parent._allClient.push(element);
+                //     }
+                //     parent.r_client.get(parent._current_system + '_usergui_' + client.logintoken, (err, r) => {
+                //         let res: guiObj = JSON.parse(r) as guiObj;
+                //         if (res) {
+                //             if (res.gui) {
+                //                 parent.setUserGUIStatus(client, res.gui);
+                //             }
+                //         }
+                //         parent.setLoginStatus(client);
+                //         parent.setClientStatus(client);
+                //         parent.setOnlineStatus(client);
+                //     });
+                // });
                 // console.log('HEART BEAT:' + ws['gui'] + " is alive:" + ws['isAlive'] + " " + ws['lastupdate'] + " timeout" + timeout);
                 // //this.send(this.client);
             });
@@ -454,13 +553,16 @@ class App {
                     let s = Buffer.from(b, 'base64').toString();
                     js['client'] = JSON.parse(s);
                     //console.log(js.client)                    
-                    js['ws'] = ws;
+                    //js['ws'] =JSON.parse(JSON.stringify(ws));
+                    js['ws'] = {};
+                    js['ws']._socket = ws['_socket'];
+                    // js['ws']._socket.remoteAddress=ws['_socket'].remoteAddress;
                     ws['lastupdate'] = parent.convertTZ(moment.now());
                     ws['isAlive'] = true;
                     ws['gui'] = js['client'].gui;
                     this.checkConnection(ws['gui']);
                     js['client'].auth = {};
-                    ws['client'] = js['client'];
+                    ws['client'] = JSON.parse(JSON.stringify(js['client']));
                     //console.log(ws['client']);
                     parent.commandReader(js).then(res => {
                         js = res;
@@ -475,7 +577,7 @@ class App {
                         if (parent._system_prefix.indexOf(js['client'].prefix) < 0) {
                             console.log('clear auth');
                             delete js['client'].auth;
-                            //parent.filterObject(js['client'].data);
+                            parent.filterObject(js['client'].data);
                         }
                         console.log('sending');
                         //console.log(js['client']);
@@ -494,13 +596,15 @@ class App {
                             type: "error",
                             gui: uuidV4()
                         };
-                        //console.log(err);
+                        //console.log('ERROR BEFORE SEND WS',err);
                         parent.errorLogging(l);
                         console.log('ws sending');
                         ws['client'] = js['client'];
                         ws['lastupdate'] = parent.convertTZ(moment.now());
                         js['client'].data.message = js['client'].data.message.message;
                         parent.filterObject(js['client'].auth);
+                        delete js['ws'];
+                        console.log('ERROR BEFORE SEND WS', js);
                         let b = Buffer.from(JSON.stringify(js['client'])).toString('base64');
                         //console.log(b);
                         let a = Buffer.from(b);
@@ -527,28 +631,27 @@ class App {
             });
         });
         const interval = setInterval(() => {
-            this.wss.clients.forEach((ws) => {
-                try {
-                    if (ws['isAlive'] === false || !ws['isAlive']) {
-                        console.log(ws['gui'] + 'ws terminated');
-                        return ws.terminate();
-                    }
-                    console.log('TIME INTERVAL');
-                    ws['isAlive'] = false;
-                    ws.ping(() => { });
-                }
-                catch (error) {
-                    console.log(error);
-                }
-            });
-        }, 60000); // set 60 seconds 
-        setInterval(() => {
-            for (let index = 0; index < parent._allClient.length; index++) {
-                const element = parent._allClient[index];
-                if (this.wss.clients.has(element)) {
-                    parent._allClient.splice(index, 1);
-                }
-            }
+            //     this.wss.clients.forEach((ws) => {
+            //         try {
+            //             if (ws['isAlive'] === false || !ws['isAlive']) {
+            //                 console.log(ws['gui'] + 'ws terminated')
+            //                 return ws.terminate();
+            //             }
+            //             console.log('TIME INTERVAL');
+            //             ws['isAlive'] = false;
+            //             ws.ping(() => { });
+            //         } catch (error) {
+            //             console.log(error);
+            //         }
+            //     });
+            // }, 60000); // set 60 seconds 
+            // setTimeout(() => {
+            //     for (let index = 0; index < parent._allClient.length; index++) {
+            //         const element = parent._allClient[index];
+            //         if (this.wss.clients.has(element)) {
+            //             parent._allClient.splice(index, 1);
+            //         }
+            //     }
         }, 60000); // set 60 seconds 
     }
     checkConnection(gui) {
@@ -565,7 +668,7 @@ class App {
         });
     }
     convertTZ(fromTZ) {
-        return new Date(moment.tz(fromTZ, "Asia/Vientiane").format());
+        return new Date(moment.tz(fromTZ, "Asia/Vientiane").format().replace('+07:00', ''));
     }
     monitor_redis(time, args, raw_reply) {
         //console.log(time + ": " + args); // 1458910076.446514:['set', 'foo', 'bar']
@@ -757,6 +860,8 @@ class App {
             //this.clog('OK Test');
             res.sendFile(path.join(__dirname + '../../../index.html'));
         });
+        // register a new user
+        router.post('/', this.register_ws);
         this.app.use('/', router);
         // this.app.all('/', (req: Request, res: Response) => {
         //     this.clog('OK Test');
@@ -960,7 +1065,7 @@ class App {
                             //console.log(res);
                             //js.ws.lastupdate = this.convertTZ(moment().format());
                         }).catch(err => {
-                            //console.log(err);
+                            //console.log('ERROR LOGIN command',err);
                             deferred.reject(err);
                         });
                         break;
@@ -1206,6 +1311,17 @@ class App {
                             deferred.reject(err);
                         });
                         break;
+                    case 'find-user-by-logintoken':
+                        this.get_user_gui_ws(js).then(res => {
+                            this.get_user_ws(res).then(res => {
+                                deferred.resolve(res);
+                            }).catch(err => {
+                                deferred.reject(err);
+                            });
+                        }).catch(err => {
+                            deferred.reject(err);
+                        });
+                        break;
                     case 'get-user-info':
                         this.get_user_info_ws(js).then(res => {
                             deferred.resolve(res);
@@ -1237,7 +1353,11 @@ class App {
                 }
             }).catch(err => {
                 console.log(err);
-                throw new Error('ERROR no authorize');
+                js = {};
+                js.client = {};
+                js.client.data = {};
+                js.client.data.message = new Error('ERROR no authorize');
+                deferred.reject(js);
             });
         }
         catch (error) {
@@ -1249,18 +1369,18 @@ class App {
         }
         return deferred.promise;
     }
-    readBinaryStringFromArrayBuffer(arrayBuffer, onSuccess, onFail) {
-        var reader = new FileReader();
-        reader.onload = (event) => {
-            onSuccess(event.target.result);
-        };
-        reader.onerror = (event) => {
-            onFail(event.target.error);
-        };
-        reader.readAsBinaryString(new Blob([arrayBuffer], {
-            type: 'application/octet-stream'
-        }));
-    }
+    // readBinaryStringFromArrayBuffer(arrayBuffer, onSuccess, onFail) {
+    //     var reader = new FileReader();
+    //     reader.onload = (event) => {
+    //         onSuccess(event.target.result);
+    //     };
+    //     reader.onerror = (event) => {
+    //         onFail(event.target.error);
+    //     };
+    //     reader.readAsBinaryString(new Blob([arrayBuffer], {
+    //         type: 'application/octet-stream'
+    //     }));
+    // }
     ab2str(arrayBuffer) {
         let binaryString = '';
         const bytes = new Uint8Array(arrayBuffer), length = bytes.length;
@@ -2569,15 +2689,15 @@ class App {
                             //     }
                             // }
                         }
-                        if (!this._client_prefix.match(user.system).length) {
-                            js.client.username = '';
-                            js.client.data.user = {};
-                            js.client.loginip = js.ws._socket.remoteAddress;
-                            js.client.logintoken = '';
-                            js.client.logintime = '';
-                            js.client.data.message = new Error('ERROR not allow this user');
-                            deferred.reject(js);
-                        }
+                        // if (!this._client_prefix.match(user.system).length) {
+                        //     js.client.username = '';
+                        //     js.client.data.user = {};
+                        //     js.client.loginip = js.ws._socket.remoteAddress;
+                        //     js.client.logintoken = '';
+                        //     js.client.logintime = '';
+                        //     js.client.data.message = new Error('ERROR not allow this user');
+                        //     deferred.reject(js);
+                        // }
                         // else if (!res.system.match(['user-management']).length) {
                         //     js.client.username = '';
                         //     js.client.data.user = {};
@@ -2587,41 +2707,59 @@ class App {
                         //     js.client.data.message = new Error('ERROR user has no an authorization');
                         //     deferred.reject(js);
                         // }
-                        else {
-                            js.client.username = js.client.data.user.username;
-                            js.client.data.user = {};
-                            js.client.loginip = js.ws._socket.remoteAddress;
-                            js.client.data.message = 'OK Login';
-                            js.client.logintoken = uuidV4();
-                            js.client.logintime = this.convertTZ(moment().format());
-                            //js.resp.send(js.client);
-                            //_arrUsers.push(js.client);
-                            js.client.data.user = {};
-                            js.client.auth = {};
-                            js.client.auth.gui = user.gui;
-                            this.register_online_chat(js, user.gui);
-                            this.setLoginStatus(js.client);
-                            this.setUserGUIStatus(js.client, user.gui);
-                            this.setOnlineStatus(js.client);
-                            // setTargetMsg(js.client, user.gui);
-                            //setTimeout(() => {
-                            deferred.resolve(js);
-                            //}, 1000 * 3);
-                        }
+                        // else {
+                        js.client.username = js.client.data.user.username;
+                        js.client.data.user = {};
+                        js.client.loginip = js.ws._socket.remoteAddress;
+                        js.client.data.message = 'OK Login';
+                        js.client.logintoken = uuidV4();
+                        js.client.logintime = this.convertTZ(moment().format());
+                        //js.resp.send(js.client);
+                        //_arrUsers.push(js.client);
+                        js.client.data.user = {};
+                        js.client.auth = {};
+                        js.client.auth.gui = user.gui;
+                        this.register_online_chat(js, user.gui);
+                        this.setLoginStatus(js.client);
+                        this.setUserGUIStatus(js.client, user.gui);
+                        this.setOnlineStatus(js.client);
+                        // setTargetMsg(js.client, user.gui);
+                        //setTimeout(() => {
+                        deferred.resolve(js);
+                        //}, 1000 * 3);
+                        // }
                     }
                 });
             }).catch((err) => {
+                console.log('------ERROR LOGIN', js);
+                let command = js.client.data.command2;
+                js.client.data = {};
+                js.client.logintoken = '';
+                js.client.loginip = '';
+                js.client.logintime = '';
+                js.client.username = '';
+                js.client.data.command = command;
                 js.client.data.message = err;
                 js.client.data.user = {};
                 js.client.accessedtime = this.convertTZ(moment().format());
+                console.log(' ERROR LOGIN 2', js);
                 //js.resp.send(js.client);
+                //console.log(js);
                 deferred.reject(js);
             });
         }
         catch (error) {
+            let command = js.client.data.command2;
+            js.client.logintoken = '';
+            js.client.loginip = '';
+            js.client.logintime = '';
+            js.client.username = '';
+            js.client.data = {};
             js.client.data.message = error;
+            js.client.data.command = command;
             js.client.data.user = {};
             js.client.accessedtime = this.convertTZ(moment().format());
+            console.log(' ERROR LOGIN 2', js);
             //js.resp.send(js.client);
             deferred.reject(js);
         }
@@ -2670,15 +2808,24 @@ class App {
         }
         return deferred.promise;
     }
+    register_user(req, res) {
+        let js = {};
+        js.client = req.body;
+        this.register_ws(js).then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log(err);
+        });
+    }
     register_ws(js) {
         let deferred = Q.defer();
-        js.client.data.user.system = [];
+        js.client.data.user.system = new Array();
         console.log('register ws');
         if (this._client_prefix.indexOf(js.client.prefix) > -1)
-            js.client.data.user.system.push(js.client.prefix);
+            js.client.data.user.system.push(new OmySystem().create(js.client.prefix));
         else {
-            js.client.data.user.system.push('default');
-            js.client.data.user.system.push('gij');
+            js.client.data.user.system.push(new OmySystem().create('default'));
+            js.client.data.user.system.push(new OmySystem().create('gij'));
         }
         this.check_secret_ws(js).then((res) => {
             console.log('check secret confirmed ');
@@ -2700,7 +2847,7 @@ class App {
         return deferred.promise;
     }
     register(js) {
-        js.client.data.user.system.push('default');
+        js.client.data.user.system.push(new OmySystem().create('default'));
         this.addNewUser(js.client.data.user).then((res) => {
             js.client.data.message = 'OK added a new user';
             js.client.resp.send(js.client);
@@ -2726,10 +2873,10 @@ class App {
         //u = this.cloneObj(js.client.data.user, u);
         u = js.client.data.user;
         if (js.client.data.user.system === undefined) {
-            js.client.data.user.system = [];
+            js.client.data.user.system = new Array();
         }
-        js.client.data.user.system.push('default');
-        js.client.data.user.system.push('gij');
+        js.client.data.user.system.push(new OmySystem().create('default'));
+        js.client.data.user.system.push(new OmySystem().create('gij'));
         console.log(this._current_system + ' adding sub user');
         this.addSubUser(js.client.data.user).then((res) => {
             console.log(this._current_system + ' added sub user');
@@ -2927,24 +3074,24 @@ class App {
                             // console.log(res);
                             let res = r;
                             res.lastupdate = this.convertTZ(moment().format());
-                            res.photo = js.client.data.user.photo;
+                            //res.photo = js.client.data.user.photo;
                             res.note = js.client.data.user.note;
                             res.description = js.client.data.user.description;
                             console.log('updating ......');
                             let attach = [];
-                            if (res.photo.length > 1) {
-                                throw new Error('ERROR too many photo');
-                            }
-                            for (let index = 0; index < res.photo.length; index++) {
-                                const element = res.photo[index];
-                                attach.push({
-                                    name: element.name,
-                                    data: element.arraybuffer,
-                                    content_type: element.type
-                                });
-                                element.arraybuffer = '';
-                                element.url = '';
-                            }
+                            // if (res.photo.length > 1) {
+                            //     throw new Error('ERROR too many photo');
+                            // }
+                            // for (let index = 0; index < res.photo.length; index++) {
+                            //     const element: IphotoObj = res.photo[index] as unknown as IphotoObj;
+                            //     attach.push({
+                            //         name: element.name,
+                            //         data: element.arraybuffer,
+                            //         content_type: element.type
+                            //     });
+                            //     element.arraybuffer = '';
+                            //     element.url = '';
+                            // }
                             //console.log(`update user profile : `+JSON.stringify(res.photo));
                             this.updateUser(res).then((res) => {
                                 this.saveAttachementsToFiles(attach);
@@ -3153,8 +3300,9 @@ class App {
         try {
             this.findUserByGUI(js.client.auth.gui).then(r => {
                 let res = r;
-                let page = (js.client.data.page === undefined) ? 0 : js.client.data.page;
                 let maxpage = js.client.data.maxpage === undefined ? 10 : js.client.data.maxpage;
+                let page = (js.client.data.page === undefined) ? 0 : js.client.data.page;
+                page = page * maxpage;
                 this.findUserListByParentName(res.username, page, maxpage).then((res) => {
                     js.client.data.userinfo = res;
                     js.client.data.message = 'OK userlist';
@@ -3279,7 +3427,7 @@ class App {
                                 e.isactive = element.isactive;
                                 e.lastupdate = element.lastupdate;
                                 e._id = element['_id'];
-                                e.photo = element.photo;
+                                // e.photo = element.photo;
                                 e.description = element.description;
                                 e.note = element.note;
                                 e.gijvalue = element.gijvalue;
@@ -3482,7 +3630,7 @@ class App {
         return deferred.promise;
     }
     filterObject(obj) {
-        var need = ['gui', '_rev', '_id', 'password', 'oldphone', 'system', 'parents', 'roles', 'isActive'];
+        var need = ['_rev', 'password', 'oldphone', 'system', 'parents', 'roles', 'isActive'];
         //console.log(key);
         for (let i in obj) {
             //if(i==='password')

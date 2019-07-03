@@ -21,250 +21,17 @@ import * as methodOverride from 'method-override';
 import * as WebSocket from 'ws';
 // import { RequestHandlerParams } from 'express-serve-static-core';
 import { Request, NextFunction, ErrorRequestHandler, Response } from "express";
+import { Idata, IloginObj, IguiObj, Igijuser, Oroles, OmySystem, Ouserprofile, Ouserprefix, Opermissions, Oencryptionkeys, ItargetObj, ImsgObj, ImySystem, IphoneObj, IonlineObj, IreceivedObj, IreadObj, myDataBaseNames, Oclient } from './interfaces';
 // import { NextHandleFunction } from 'connect';
 // import { POINT_CONVERSION_COMPRESSED } from 'constants';
 // import { Module } from 'module';//
+
 declare global {
     interface Array<T> {
         match(arr2: Array<T>): Array<T>;
     }
 }
-export interface Iclient {
-    gui: '',
-    username: '',
-    logintoken: '',
-    logintime: '',
-    loginip: '',
-    data: any,
-    auth: any
-};
 
-export interface ImySystem {
-    _id: string,
-    _rev: string,
-    systemname: string
-}
-export class OmySystem implements ImySystem {
-    _id: string;
-    _rev: string;
-    systemname: string;
-    create(systemname: string = ''): ImySystem {
-        this.systemname = systemname;
-        return this;
-    }
-
-}
-export interface Igijuser {
-    _id: string,
-    _rev: string,
-    username: string;
-    password: string;
-    confirmpassword: string;
-    phonenumber: string;
-    gui: string;
-    createddate: Date;
-    lastupdate: Date;
-    isactive: boolean;
-    parents: Array<string>;
-    roles: Array<Iroles>;
-    logintoken: string;
-    expirelogintoken: string;
-    description: string;
-    //photo: Array<IphoneObj>;
-    note: string;
-    system: Array<ImySystem>; /// ice-maker, gij, stock-manager....
-    gijvalue: number;
-    totalgij: number;
-    totalgijspent: number;
-    oldphone: Array<string> | undefined;
-    userprofile: Iuserprofile,
-    userprefix: Iuserprefix,
-    permission: Ipermissions,
-    enryptionkeys: Ienryptionkeys
-}
-export class Ouserprofile implements Iuserprofile {
-    _id: string; _rev: string;
-    owner: string;
-    firstname: string;
-    lastname: string;
-    address: string;
-    photo: IphotoObj[];
-    description: string;
-    remark: string;
-    create(owner: string = ''): Ouserprofile {
-        this.owner = owner;
-        return this;
-    }
-}
-
-interface Iuserprofile {
-    _id: string,
-    _rev: string,
-    owner: string,
-    firstname: string,
-    lastname: string,
-    address: string,
-    photo: Array<IphotoObj>,
-    description: string,
-    remark: string,
-}
-interface Irolelist {
-    _id: string,
-    _rev: string,
-    rolename: string
-}
-export class Ouserprefix implements Iuserprefix {
-    _id: string; _rev: string;
-    prefixname: string;
-    prefix: string;
-    owner: string;
-    starttime: string;
-    endtime: string;
-    create(prefixname: string = '', prefix: string = ''): Iuserprefix {
-        this.prefixname = prefixname;
-        this.prefix = prefix;
-        return this;
-    }
-
-}
-interface Iuserprefix {
-    _id: string,
-    _rev: string,
-    prefixname: string,
-    prefix: string,
-    owner: string,
-    starttime: string,
-    endtime: string
-}
-export class Opermissions implements Ipermissions {
-    _id: string; _rev: string;
-    permissionname: string;
-    create(permissionname: string = ''): Ipermissions {
-        this.permissionname = permissionname;
-        return this;
-    }
-}
-interface Ipermissions {
-    _id: string,
-    _rev: string,
-    permissionname: string
-}
-export class Oencryptionkeys implements Ienryptionkeys {
-    _id: string; _rev: string;
-    keys: string;
-    owner: string;
-    isActive: string;
-    startime: string;
-    endtime: string;
-    create(owner: string = ''): Ienryptionkeys {
-        this.owner = owner;
-        return this;
-    }
-
-}
-interface Ienryptionkeys {
-    _id: string,
-    _rev: string,
-    keys: string,
-    owner: string,
-    isActive: string,
-    startime: string,
-    endtime: string,
-}
-interface Iroles {
-    _id: string,
-    _rev: string,
-    rolename: string,
-    permission: Array<Ipermissions>,
-    oldroles: Array<Iroles>,
-    assignedtime: string,
-    deassignedtime: string,
-}
-class Oroles implements Iroles {
-    _id: string; _rev: string;
-    rolename: string;
-    permission: Ipermissions[];
-    oldroles: Iroles[];
-    assignedtime: string;
-    deassignedtime: string;
-    create(rolename: string = ''): Iroles {
-        this.rolename = rolename;
-        return this;
-    }
-
-}
-
-
-
-
-
-
-
-
-export interface IphoneObj {
-    command: string;
-    secret: string;
-}
-export interface IloginObj {
-    command: string;
-    client: any;
-}
-export interface IguiObj {
-    command: string;
-    gui: string;
-}
-export interface IonlineObj {
-    command: string;
-    client: {
-        username: string;
-        onlinetime: Date;
-        system: string;
-        login: Array<any>;
-    }
-}
-export interface IphotoObj {
-    name: string;
-    arraybuffer: string;
-    type: string;
-    url: string;
-}
-export interface ItargetObj {
-    "_deleted": boolean,
-    "_id": string,
-    "_rev": string,
-    "gui": string,
-    "targetid": string,
-    "usergui": string,
-    "username": string,
-    "memberusername": Array<string>,
-    "membergui": Array<string>,
-    "exmember": Array<string>,
-    "pendingmemberapproval": Array<string>,
-    "deniedapprovlalist": Array<string>,
-    "pendinginvited": Array<string>,
-    "refusedinvited": Array<string>,
-    "blacklist": Array<string>,
-    "createddate": Date,
-    "msg": Array<ImsgObj>
-}
-export interface receivedObj {
-    "username": string,
-    "received": Date
-}
-export interface IreadObj {
-    "username": string,
-    "read": Date
-}
-export interface ImsgObj {
-    "gui": string,
-    "sender": string,
-    "content": string,
-    "msgtype": string,
-    "attached": Array<any>,
-    "sent": Date,
-    "received": Array<receivedObj>,
-    "read": Array<IreadObj>
-}
 
 
 
@@ -439,17 +206,20 @@ class App {
                     });
                 } catch (error) {
                     console.log(error);
-                    js['client'].data.message = error.message;
-                    ws['client'] = js['client'];
-                    ws['lastupdate'] = parent.convertTZ(moment.now());
-                    parent.filterObject(js['client'].auth);
-                    let b = Buffer.from(JSON.stringify(js['client'])).toString('base64');
-                    //console.log(b);
-                    let a = Buffer.from(b);
-                    //console.log(a);
-                    ws.send(JSON.stringify(b), {
-                        binary: true
-                    });
+                    if (js['client']) {
+                        js['client'].data.message = error.message;
+                        ws['client'] = js['client'];
+                        ws['lastupdate'] = parent.convertTZ(moment.now());
+                        parent.filterObject(js['client'].auth);
+                        let b = Buffer.from(JSON.stringify(js['client'])).toString('base64');
+                        //console.log(b);
+                        let a = Buffer.from(b);
+                        //console.log(a);
+                        ws.send(JSON.stringify(b), {
+                            binary: true
+                        });
+                    }
+                    ws.close();
                 }
 
             });
@@ -790,13 +560,29 @@ class App {
             res.sendFile(path.join(__dirname + '../../../index.html'));
         });
         // register a new user
-        router.post('/',this.register_ws);
+        router.post('/register', this.register);
+        // change password
+        router.post('/changepassword', this.change_password);
+        // update profile
+        router.post('/updateuser', this.updateUser);
+        // get profile
+        router.post('/get-user-profile', this.get_user_details);
+        // change password
+        router.post('/login', this.login);
+        // change password
+        router.post('/logout', this.logout);
+        router.post('/shakehands', this.init);
         this.app.use('/', router);
-        
+
         // this.app.all('/', (req: Request, res: Response) => {
         //     this.clog('OK Test');
         //     res.sendFile(path.join(__dirname + '../../../index.html'));
         // });
+    }
+    init(req:Request,res:Response) {
+        let js={};
+        js['client']=new Oclient();
+        this.get_client_ws(js).then()
     }
     checkAuthorize(js) {
         let deferred = Q.defer();
@@ -1625,26 +1411,6 @@ class App {
             message: {},
         }
     }
-    private _user = {
-        username: '',
-        password: '',
-        phonenumber: '',
-        gui: '',
-        createddate: '',
-        lastupdate: '',
-        isactive: '',
-        parents: [],
-        roles: [],
-        logintoken: '',
-        expirelogintoken: '',
-        description: '',
-        photo: '',
-        note: '',
-        system: '', //system, gij, ice-maker,gps,lom
-        gijvalue: 0,
-        totalgij: 0,
-        totalgijspent: 0
-    }
     private defaultUser: Igijuser = {
         _id: '',
         _rev: '',
@@ -1674,8 +1440,8 @@ class App {
         enryptionkeys: (new Oencryptionkeys()).create('')
     }
     private sDefaultUsers: Array<Igijuser> = [{
-        _id:'',
-        _rev:'',
+        _id: '',
+        _rev: '',
         username: 'webpost-admin',
         password: '123456',
         confirmpassword: '',
@@ -1702,8 +1468,8 @@ class App {
         enryptionkeys: (new Oencryptionkeys()).create('')
     },
     {
-        _id:'',
-        _rev:'',
+        _id: '',
+        _rev: '',
         username: 'gij-admin',
         password: '123456',
         confirmpassword: '',
@@ -1730,8 +1496,8 @@ class App {
         enryptionkeys: (new Oencryptionkeys()).create('')
     },
     {
-        _id:'',
-        _rev:'',
+        _id: '',
+        _rev: '',
         username: 'gps-admin',
         password: '123456',
         confirmpassword: '',
@@ -1758,8 +1524,8 @@ class App {
         enryptionkeys: (new Oencryptionkeys()).create('')
     },
     {
-        _id:'',
-        _rev:'',
+        _id: '',
+        _rev: '',
         username: 'ice-maker-admin',
         password: '123456',
         confirmpassword: '',
@@ -1786,8 +1552,8 @@ class App {
         enryptionkeys: (new Oencryptionkeys()).create('')
     },
     {
-        _id:'',
-        _rev:'',
+        _id: '',
+        _rev: '',
         username: 'stock-manager-admin',
         password: '123456',
         confirmpassword: '',
@@ -1813,6 +1579,34 @@ class App {
         permission: (new Opermissions()).create(''),
         enryptionkeys: (new Oencryptionkeys()).create('')
     },
+    {
+        _id: '',
+        _rev: '',
+        username: 'task-manager-admin',
+        password: '123456',
+        confirmpassword: '',
+        phonenumber: '2055516321',
+        gui: uuidV4(),
+        createddate: this.convertTZ(moment().format()),
+        lastupdate: this.convertTZ(moment().format()),
+        isactive: true,
+        parents: ["default"],
+        roles: [(new Oroles()).create('admin'), (new Oroles()).create('user')],
+        logintoken: '',
+        expirelogintoken: '',
+        description: '',
+        // photo: [],
+        note: '',
+        system: [(new OmySystem()).create('task-manager'), (new OmySystem()).create('gij')],
+        gijvalue: 0,
+        totalgij: 0,
+        totalgijspent: 0,
+        oldphone: [],
+        userprofile: (new Ouserprofile()).create(''),
+        userprefix: (new Ouserprefix()).create('', ''),
+        permission: (new Opermissions()).create(''),
+        enryptionkeys: (new Oencryptionkeys()).create('')
+    },
     ];
 
 
@@ -1823,7 +1617,7 @@ class App {
     }
 
     loadAdmin(js) {
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         db.view(this.__design_view, 'findAdmin', {
             include_docs: true, key: 'user-management'
         }, (err, res) => {
@@ -1853,21 +1647,21 @@ class App {
     }
 
     init_default_user(js) {
-        //let db = create_db('gijusers');
+        //let db = create_db(myDataBaseNames.dbuser);
         //console.log('default user:'+defaultUser.username);
         // findUserByUsername(defaultUser.username).then((res) {
         //     if (res) {
-        this.nano.db.destroy('gijusers', (err, body) => {
+        this.nano.db.destroy(myDataBaseNames.dbuser, (err, body) => {
             js.client.data = {};
             js.client.data.message = 'destroy OK';
-            this.nano.db.create('gijusers', (err, body) => {
+            this.nano.db.create(myDataBaseNames.dbuser, (err, body) => {
                 // specify the database we are going to use    
                 if (!err) {
                     console.log('database  created!');
                 } else {
                     console.log("gijusers could not be created!");
                 }
-                let db = this.nano.use('gijusers');
+                let db = this.nano.use(myDataBaseNames.dbuser);
                 db.insert(this.__design_users, "_design/objectList", (err, res) => {
                     if (err) console.log('err insert new design ' + err);
                     else {
@@ -2056,7 +1850,7 @@ class App {
 
     findUserRoles(gui) {
         let deferred = Q.defer();
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         db.view(this.__design_view, 'findByUserGui', {
             keys: [gui]
         }, (err, res) => {
@@ -2680,6 +2474,8 @@ class App {
                             data.memberusername.push(js.client.username);
                         }
                         let msg: ImsgObj = {
+                            _id:'',
+                            _rev:'',
                             gui: uuidV4(),
                             sender: js.client.username,
                             content: '@hello@',
@@ -2693,11 +2489,11 @@ class App {
                             received: [{
                                 username: '',
                                 received: this.convertTZ(moment().format())
-                            }], //
+                            } as IreceivedObj], //
                             read: [{
                                 username: '',
                                 read: this.convertTZ(moment().format())
-                            }] // 
+                            } as IreadObj] // 
                         }
                         if (data.msg.length > 1) {
                             data.msg.shift();
@@ -2809,11 +2605,13 @@ class App {
                     if (data.membergui.indexOf(js.client.auth.gui) < 0) {
                         throw new Error('ERROR you are not a memember')
                     }
-                    let msg = {
+                    let msg:ImsgObj = {
                         gui: uuidV4(),
+                        _id:'',
+                        _rev:'',
                         // target: 0, // 0= @user:.... , 1=@group:.... , 2= @chanel:.... ,3= @room:.....
                         // sendergui: js.client.auth.gui,
-                        targetid: js.client.data.msg.targetid,
+                        //targetid: js.client.data.msg.targetid,
                         sender: js.client.username,
                         content: js.client.data.msg.content,
                         msgtype: js.client.data.msg.msgtype, // photo , sound, video, text, typing, misc
@@ -2822,11 +2620,11 @@ class App {
                         received: [{
                             username: '',
                             received: this.convertTZ(moment().format())
-                        }], //
+                        } as IreceivedObj], //
                         read: [{
                             username: '',
                             read: this.convertTZ(moment().format())
-                        }] // 
+                        } as IreadObj] // 
                     }
                     if (data.msg.length > 1) {
                         data.msg.shift();
@@ -3047,7 +2845,7 @@ class App {
 
     authentication(userinfo) {
         let deferred = Q.defer();
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         console.log('check authen');
         try {
             db.view(this.__design_view, 'authentication', {
@@ -3075,16 +2873,16 @@ class App {
     }
 
 
-    register_user(req:Request,res:Response){
-        let js:any={};
-        js.client= req.body;
-        this.register_ws(js).then(res=>{
+    register_user(req: Request, res: Response) {
+        let js: any = {};
+        js.client = req.body;
+        this.register_ws(js).then(res => {
             console.log(res);
-            
-        }).catch(err=>{
+
+        }).catch(err => {
             console.log(err);
 
-            
+
         });
     }
     register_ws(js) {
@@ -3162,7 +2960,7 @@ class App {
     }
     addSubUser(userinfo) {
         let deferred = Q.defer();
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         let parents = [];
         if (userinfo.parents === undefined) {
             userinfo.parents = ['default'];
@@ -3230,7 +3028,7 @@ class App {
 
     addNewUser(userinfo) {
         let deferred = Q.defer();
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         let parents = [];
         if (userinfo.parents === undefined) {
             userinfo.parents = ['default'];
@@ -3596,7 +3394,7 @@ class App {
 
     countUserListByParentName(username) {
         let deferred = Q.defer();
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         console.log('count User list by parent: ' + username)
         db.view(this.__design_view, 'countByParent', {
             key: [username + '']
@@ -3632,7 +3430,7 @@ class App {
 
     searchUserByParentName(parent, username, page, maxpage) {
         let deferred = Q.defer();
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         this.countUserListByParentName(username).then(res => {
             let count = res;
             db.view(this.__design_view, 'searchByParent', {
@@ -3671,7 +3469,7 @@ class App {
 
     findUserListByParentName(username, page = 0, maxpage = 10) {
         let deferred = Q.defer();
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         this.countUserListByParentName(username).then((res) => {
             let count = res;
             console.log('count user list ' + count);
@@ -3823,7 +3621,7 @@ class App {
 
     getAttachements(id) {
         let deferred = Q.defer();
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         try {
             // db.multipart.get(id,(err,res)=>{
             //     if(err)throw err;
@@ -3838,7 +3636,44 @@ class App {
         }
         return deferred.promise;
     }
-
+    get_user_details(js) {
+        let deferred = Q.defer();
+        this.r_client.get(this._current_system + '_usergui_' + js.client.logintoken, (err, gui) => {
+            if (err) {
+                js.client.data.message = err;
+                deferred.reject(js);
+            } else {
+                if (gui) {
+                    let c = JSON.parse(gui);
+                    gui = c.gui;
+                    this.displayUserDetails(gui).then((res) => {
+                        js.client.data.user = res;
+                        //console.log(` user photo `+JSON.stringify(res.photo));
+                        if (js.client.data.user.photo === undefined || !js.client.data.user.photo) {
+                            js.client.data.user.photo = [];
+                        }
+                        let currenthost = 'http://nonav.net:6688';
+                        for (let index = 0; index < js.client.data.user.photo.length; index++) {
+                            const element = js.client.data.user.photo[index];
+                            // console.log(`reading file __dirname+'/public/profiles/'+element.name`); 
+                            //element.arraybuffer=fs.readFileSync(__dirname+'/public/profiles/'+element.name, "binary");           
+                            element.arraybuffer = '/public/profiles/' + element.name;
+                        }
+                        //console.log(js.client.data.user.photo.length)
+                        js.client.data.message = 'OK';
+                        deferred.resolve(js);
+                    }).catch((err) => {
+                        js.client.data.message = err;
+                        deferred.reject(js);
+                    });
+                } else {
+                    js.client.data.message = new Error('ERROR gui not found');
+                    deferred.reject(js);
+                }
+            }
+        });
+        return deferred.promise;
+    }
     get_user_details_ws(js) {
         let deferred = Q.defer();
         this.r_client.get(this._current_system + '_usergui_' + js.client.logintoken, (err, gui) => {
@@ -3930,7 +3765,7 @@ class App {
 
     findUserByGUI(gui) {
         let deferred = Q.defer();
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         db.view(this.__design_view, 'findByUserGui', {
             include_docs: true, key: gui + ''
         }, (err, res) => {
@@ -4278,7 +4113,7 @@ class App {
 
     checkUserByPhone(phone) {
         let deferred = Q.defer();
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         db.view(this.__design_view, 'findByPhone', {
             include_docs: true, key: phone + ''
         }, (err, res) => {
@@ -4296,7 +4131,7 @@ class App {
 
     findUserByPhone(phone) {
         let deferred = Q.defer();
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         db.view(this.__design_view, 'findByPhone', {
             include_docs: true, key: phone + ''
         }, (err, res) => {
@@ -4395,7 +4230,7 @@ class App {
     searchUserByUsername(username) {
         let deferred = Q.defer();
         try {
-            let db = this.create_db('gijusers');
+            let db = this.create_db(myDataBaseNames.dbuser);
             db.view(this.__design_view, 'searchByUsername', {
                 include_docs: true,
                 startkey: username + '',
@@ -4453,7 +4288,7 @@ class App {
 
     findUserByUsername(username) {
         let deferred = Q.defer();
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         try {
             console.log('find username : ' + username);
             if (username === undefined)
@@ -4545,7 +4380,7 @@ class App {
 
     updateUser(userinfo) {
         let deferred = Q.defer();
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         try {
             if (!userinfo._rev) {
                 userinfo.gui = uuidV4();
@@ -4573,7 +4408,7 @@ class App {
 
     change_password(js, phone, oldpass, newpass) {
         let deferred = Q.defer();
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         let username = js.client.username;
         let gui = js.client.gui;
         console.log("username:" + username);
@@ -4610,7 +4445,7 @@ class App {
 
     findUserByUsernameAndPhone(username, phone) {
         let deferred = Q.defer();
-        let db = this.create_db('gijusers');
+        let db = this.create_db(myDataBaseNames.dbuser);
         console.log("finding : " + username + " phone:" + phone);
         db.view(this.__design_view, 'findByUsernameAndPhone', {
             include_docs: true, key: [username + '', phone + '']
@@ -4637,9 +4472,9 @@ class App {
 
     initDB() {
 
-        this.init_db('gijusers', this.__design_users);
-        this.init_db('targetmsg', this.__design_targetmsg);
-        this.init_db('pendingrequest', this.__design_pendingrequest);
+        this.init_db(myDataBaseNames.dbuser, this.__design_users);
+        // this.init_db('targetmsg', this.__design_targetmsg);
+        // this.init_db('pendingrequest', this.__design_pendingrequest);
     }
 
     create_db(dbname) {
