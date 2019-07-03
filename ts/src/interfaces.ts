@@ -20,8 +20,8 @@ const nano_time = (unit) => {
   };
 /// Database name
 export class myDataBaseNames{
-    static dbuser:string="g-users";
-
+    static dbuser:string="g-users-";
+    static dbprofile:string ="g-profile-";
 }
 /// dbname-prefix
 
